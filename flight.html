@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Carbon Footprint Calculator</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .calculator-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        .btn-primary {
+            background-color: #4CAF50;
+            border: none;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .result-box span {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h3 class="text-center">Flight Carbon Footprint Calculator</h3>
+        <form id="flightForm">
+            <div class="form-group">
+                <label>Flight Type</label><br>
+                <input type="radio" name="tripType" value="return" checked> Return trip
+                <input type="radio" name="tripType" value="one-way" class="ml-3"> One-way flight
+            </div>
+
+            <div class="form-group">
+                <label for="from">From:</label>
+                <input type="text" class="form-control" id="from" placeholder="Enter departure location">
+            </div>
+
+            <div class="form-group">
+                <label for="to">To:</label>
+                <input type="text" class="form-control" id="to" placeholder="Enter destination location">
+            </div>
+
+            <div class="form-group">
+                <label for="via">Via (optional):</label>
+                <input type="text" class="form-control" id="via" placeholder="Enter connecting airport">
+            </div>
+
+            <div class="form-group">
+                <label for="class">Class:</label>
+                <select class="form-control" id="class">
+                    <option value="economy">Economy class</option>
+                    <option value="business">Business class</option>
+                    <option value="first">First class</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="trips">Trips:</label>
+                <input type="number" class="form-control" id="trips" value="1">
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="radiativeForcing" checked>
+                <label class="form-check-label" for="radiativeForcing">Include radiative forcing</label>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-block" id="calculateBtn">Calculate & Add To Footprint</button>
+        </form>
+
+        <div class="result-box text-center" id="resultBox">
+            Total Flights Footprint = <span id="footprintResult">0.00</span> tonnes of CO2e
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $('#calculateBtn').click(function() {
+            var from = $('#from').val();
+            var to = $('#to').val();
+            var trips = parseInt($('#trips').val());
+            var classType = $('#class').val();
+            var radiativeForcing = $('#radiativeForcing').is(':checked');
+            
+            // Simplified CO2 calculation logic for demonstration purposes
+            var baseEmission = 0.15; // Base emission in tonnes per flight
+            if (classType === 'business') baseEmission *= 1.5;
+            if (classType === 'first') baseEmission *= 2;
+            var totalEmission = baseEmission * trips;
+            if (radiativeForcing) totalEmission *= 1.9; // Radiative forcing factor
+
+            $('#footprintResult').text(totalEmission.toFixed(2));
+        });
+    </script>
+
+</body>
+</html>
